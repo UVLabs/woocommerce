@@ -43,18 +43,20 @@ type BlockEditorSettings = Partial<
 
 type BlockEditorProps = {
 	context: Partial< ProductEditorContext >;
-	productType: string;
+	postType: string;
 	productId: number;
+	productType: string;
 	settings: BlockEditorSettings | undefined;
 };
 
 export function BlockEditor( {
 	context,
 	settings: _settings,
-	productType,
+	postType,
 	productId,
+	productType,
 }: BlockEditorProps ) {
-	useConfirmUnsavedProductChanges( productType );
+	useConfirmUnsavedProductChanges( postType );
 
 	const canUserCreateMedia = useSelect( ( select: typeof WPSelect ) => {
 		const { canUser } = select( 'core' );
@@ -91,7 +93,7 @@ export function BlockEditor( {
 
 	const [ blocks, onInput, onChange ] = useEntityBlockEditor(
 		'postType',
-		productType,
+		postType,
 		{ id: productId }
 	);
 
@@ -109,7 +111,7 @@ export function BlockEditor( {
 		onChange( blockInstances, {} );
 
 		updateEditorSettings( settings ?? {} );
-	}, [ productType, productId ] );
+	}, [ productType ] );
 
 	if ( ! blocks ) {
 		return null;
