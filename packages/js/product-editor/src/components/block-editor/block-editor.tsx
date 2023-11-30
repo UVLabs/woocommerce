@@ -32,22 +32,8 @@ import {
  * Internal dependencies
  */
 import { useConfirmUnsavedProductChanges } from '../../hooks/use-confirm-unsaved-product-changes';
-import { ProductEditorContext } from '../../types';
 import { PostTypeContext } from '../../contexts/post-type-context';
-
-type BlockEditorSettings = Partial<
-	EditorSettings & EditorBlockListSettings
-> & {
-	templates?: Record< string, Template[] >;
-};
-
-type BlockEditorProps = {
-	context: Partial< ProductEditorContext >;
-	postType: string;
-	productId: number;
-	productType: string;
-	settings: BlockEditorSettings | undefined;
-};
+import { BlockEditorProps, BlockEditorSettings } from './types';
 
 export function BlockEditor( {
 	context,
@@ -100,7 +86,7 @@ export function BlockEditor( {
 	const { updateEditorSettings } = useDispatch( 'core/editor' );
 
 	useLayoutEffect( () => {
-		const template = settings?.templates?.[ productType ];
+		const template = settings?.templates?.[ postType ];
 
 		if ( ! template ) {
 			return;
