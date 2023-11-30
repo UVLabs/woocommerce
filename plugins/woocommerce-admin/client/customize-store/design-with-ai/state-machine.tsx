@@ -328,10 +328,7 @@ export const designWithAiStateMachineDefinition = createMachine(
 												target: 'success',
 											},
 											onError: {
-												actions: [
-													'assignAPICallLoaderError',
-												],
-												target: '#toneOfVoice',
+												target: '#apiCallLoader.onAiError',
 											},
 										},
 									},
@@ -374,10 +371,7 @@ export const designWithAiStateMachineDefinition = createMachine(
 												target: 'done',
 											},
 											onError: {
-												actions: [
-													'assignAPICallLoaderError',
-												],
-												target: '#toneOfVoice',
+												target: '#apiCallLoader.onAiError',
 											},
 										},
 									},
@@ -411,6 +405,18 @@ export const designWithAiStateMachineDefinition = createMachine(
 						},
 						onDone: {
 							target: '#designWithAi.showAssembleHub',
+						},
+					},
+					onAiError: {
+						entry: 'assignAPICallLoaderError',
+						invoke: {
+							src: 'resetPatterns',
+							onDone: {
+								target: '#designWithAi.showAssembleHub',
+							},
+							onError: {
+								target: '#designWithAi.showAssembleHub',
+							},
 						},
 					},
 				},

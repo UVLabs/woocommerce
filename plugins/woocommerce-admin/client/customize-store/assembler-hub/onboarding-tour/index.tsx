@@ -29,8 +29,9 @@ export const OnboardingTour = ( {
 	const [ placement, setPlacement ] =
 		useState< TourKitTypes.WooConfig[ 'placement' ] >( 'left' );
 
-	const { context } = useContext( CustomizeStoreContext );
-	const aiOnline = context.aiOnline;
+	const aiOnline =
+		new URLSearchParams( window.location.search ).get( 'ai-has-error' ) ===
+		'false';
 
 	if ( showWelcomeTour ) {
 		const classNames = [

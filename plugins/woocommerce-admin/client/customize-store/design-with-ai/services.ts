@@ -465,6 +465,13 @@ const saveAiResponseToOption = ( context: designWithAiStateMachineContext ) => {
 	} );
 };
 
+export const resetPatterns = () => async () => {
+	return await apiFetch( {
+		path: '/wc/private/ai/patterns',
+		method: 'DELETE',
+	} );
+};
+
 export const services = {
 	browserPopstateHandler,
 	queryAiEndpoint,
@@ -472,4 +479,5 @@ export const services = {
 	updateStorePatterns,
 	saveAiResponseToOption,
 	installAndActivateTheme,
+	resetPatterns,
 };

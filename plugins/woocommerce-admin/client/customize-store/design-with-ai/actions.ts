@@ -295,7 +295,11 @@ const recordTracksStepCompleted = (
 const redirectToAssemblerHub = async (
 	context: designWithAiStateMachineContext
 ) => {
-	const assemblerUrl = getNewPath( {}, '/customize-store/assembler-hub', {} );
+	const assemblerUrl = getNewPath(
+		{},
+		'/customize-store/assembler-hub',
+		context.apiCallLoader.hasErrors ? { 'ai-offline': 'true' } : {}
+	);
 	const iframe = document.createElement( 'iframe' );
 	iframe.classList.add( 'cys-fullscreen-iframe' );
 	iframe.src = assemblerUrl;
