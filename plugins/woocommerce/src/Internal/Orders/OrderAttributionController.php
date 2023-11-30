@@ -229,7 +229,7 @@ class OrderAttributionController implements RegisterHooksInterface {
 				'session'       => $session_length,
 				'ajaxurl'       => admin_url( 'admin-ajax.php' ),
 				'prefix'        => $this->field_prefix,
-				'allowTracking' => $allow_tracking,
+				'allowTracking' => $allow_tracking === 'yes' ? true : false,
 			),
 			'fields' => $this->fields,
 		);
@@ -298,6 +298,8 @@ class OrderAttributionController implements RegisterHooksInterface {
 		foreach ( $this->field_names as $field_name ) {
 			printf( '<input type="hidden" name="%s" value="" />', esc_attr( $this->get_prefixed_field_name( $field_name ) ) );
 		}
+
+		echo '<wc-order-attribution></wc-order-attribution>';
 	}
 
 	/**
