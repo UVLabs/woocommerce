@@ -303,7 +303,7 @@
 		color: var(--wp-admin-theme-color, #3858e9);
 		display: inline-block;
 		font-size: 0.8125rem;
-		margin: 3.75rem 0;
+		margin: 3.75rem 0 3.375rem 0;
 		padding: 0.5rem 0.75rem;
 	}
 }
@@ -340,5 +340,25 @@
 		display: flex;
 		gap: 12px;
 		justify-content: flex-end;
+	}
+}
+
+.woocommerce-customize-store-ai-offline-notice {
+	border-top: 1px solid #F0F0F1;
+	display: flex;
+	flex-direction: column;
+	align-items: baseline;
+	margin-bottom: 60px;
+	h3 {
+		margin: 54px 0 8px 0;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 24px;
+	}
+
+	p {
+		max-width: 425px;
+		text-align: left;
+		color: #2F2F2F;
 	}
 }

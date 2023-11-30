@@ -243,10 +243,10 @@ export const customizeStoreStateMachineDefinition = createMachine( {
 					invoke: {
 						src: 'resetPatterns',
 						onDone: {
-							target: '#customizeStore.designWithAi',
+							target: 'preIntro',
 						},
 						onError: {
-							target: '#customizeStore.designWithAi',
+							target: 'preIntro',
 						},
 					},
 				},

@@ -122,7 +122,7 @@ export const Intro: CustomizeStoreComponent = ( { sendEvent, context } ) => {
 
 	return (
 		<>
-			{ ModalComponent && (
+			{ context.aiOnline && ModalComponent && (
 				<ModalComponent
 					sendEvent={ sendEvent }
 					setOpenDesignChangeWarningModal={
@@ -162,12 +162,14 @@ export const Intro: CustomizeStoreComponent = ( { sendEvent, context } ) => {
 				</div>
 
 				<div className="woocommerce-customize-store-main">
-					<BannerComponent
-						setOpenDesignChangeWarningModal={
-							setOpenDesignChangeWarningModal
-						}
-						sendEvent={ sendEvent }
-					/>
+					{ context.aiOnline && (
+						<BannerComponent
+							setOpenDesignChangeWarningModal={
+								setOpenDesignChangeWarningModal
+							}
+							sendEvent={ sendEvent }
+						/>
+					) }
 
 					<p className="select-theme-text">
 						{ __(
@@ -215,6 +217,22 @@ export const Intro: CustomizeStoreComponent = ( { sendEvent, context } ) => {
 						>
 							{ __( 'Browse all themes', 'woocommerce' ) }
 						</button>
+						{ ! context.aiOnline && (
+							<div className="woocommerce-customize-store-ai-offline-notice">
+								<h3>
+									{ __(
+										'Looking to design your store using AI?',
+										'woocommerce'
+									) }
+								</h3>
+								<p>
+									{ __(
+										"It looks like AI is having a bad day and it's not available right now. Select a professionally designed theme or try again later.",
+										'woocommerce'
+									) }
+								</p>
+							</div>
+						) }
 					</div>
 				</div>
 			</div>
