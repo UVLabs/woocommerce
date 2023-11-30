@@ -36,15 +36,11 @@ export type DesignWithAiComponentMeta = {
 
 export const DesignWithAiController = ( {
 	parentMachine,
-	parentContext,
 }: {
 	parentMachine?: AnyInterpreter;
 	sendEventToParent?: Sender< customizeStoreStateMachineEvents >;
 	parentContext?: customizeStoreStateMachineContext;
 } ) => {
-	// Assign aiOnline value from the parent context if it exists. Otherwise, ai is online by default.
-	designWithAiStateMachineDefinition.context.aiOnline =
-		parentContext?.aiOnline ?? true;
 	const [ state, send, service ] = useMachine(
 		designWithAiStateMachineDefinition,
 		{

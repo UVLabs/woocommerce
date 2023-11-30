@@ -38,10 +38,6 @@ export const hasStepInUrl = (
 	);
 };
 
-export const isAiOnline = ( _ctx: designWithAiStateMachineContext ) => {
-	return _ctx.aiOnline;
-};
-
 export const designWithAiStateMachineDefinition = createMachine(
 	{
 		id: 'designWithAi',
@@ -88,7 +84,6 @@ export const designWithAiStateMachineDefinition = createMachine(
 			apiCallLoader: {
 				hasErrors: false,
 			},
-			aiOnline: true,
 		},
 		initial: 'navigate',
 		states: {
@@ -277,19 +272,8 @@ export const designWithAiStateMachineDefinition = createMachine(
 						type: 'parallel',
 						states: {
 							chooseColorPairing: {
-								initial: 'executeOrSkip',
+								initial: 'pending',
 								states: {
-									executeOrSkip: {
-										always: [
-											{
-												target: 'pending',
-												cond: 'isAiOnline',
-											},
-											{
-												target: 'success',
-											},
-										],
-									},
 									pending: {
 										invoke: {
 											src: 'queryAiEndpoint',
@@ -323,19 +307,8 @@ export const designWithAiStateMachineDefinition = createMachine(
 								},
 							},
 							chooseFontPairing: {
-								initial: 'executeOrSkip',
+								initial: 'pending',
 								states: {
-									executeOrSkip: {
-										always: [
-											{
-												target: 'pending',
-												cond: 'isAiOnline',
-											},
-											{
-												target: 'success',
-											},
-										],
-									},
 									pending: {
 										entry: [ 'assignFontPairing' ],
 										always: {
@@ -346,19 +319,8 @@ export const designWithAiStateMachineDefinition = createMachine(
 								},
 							},
 							updateStorePatterns: {
-								initial: 'executeOrSkip',
+								initial: 'pending',
 								states: {
-									executeOrSkip: {
-										always: [
-											{
-												target: 'pending',
-												cond: 'isAiOnline',
-											},
-											{
-												target: 'success',
-											},
-										],
-									},
 									pending: {
 										invoke: {
 											src: 'updateStorePatterns',
@@ -403,19 +365,8 @@ export const designWithAiStateMachineDefinition = createMachine(
 						type: 'parallel',
 						states: {
 							assembleSite: {
-								initial: 'executeOrSkip',
+								initial: 'pending',
 								states: {
-									executeOrSkip: {
-										always: [
-											{
-												target: 'pending',
-												cond: 'isAiOnline',
-											},
-											{
-												target: '#designWithAi.showAssembleHub',
-											},
-										],
-									},
 									pending: {
 										invoke: {
 											src: 'assembleSite',
@@ -478,7 +429,6 @@ export const designWithAiStateMachineDefinition = createMachine(
 		services,
 		guards: {
 			hasStepInUrl,
-			isAiOnline,
 		},
 	}
 );
