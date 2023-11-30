@@ -219,33 +219,10 @@ export const customizeStoreStateMachineDefinition = createMachine( {
 						src: 'fetchAiStatus',
 						onDone: {
 							actions: 'assignAiStatus',
-							target: 'postCheckAiStatus',
+							target: 'preIntro',
 						},
 						onError: {
 							actions: 'assignAiOffline',
-							target: '#customizeStore.designWithAi',
-						},
-					},
-				},
-				postCheckAiStatus: {
-					always: [
-						{
-							target: 'preIntro',
-							cond: 'isAiOnline',
-						},
-						{
-							target: 'resetPatterns',
-							cond: 'isAiOffline',
-						},
-					],
-				},
-				resetPatterns: {
-					invoke: {
-						src: 'resetPatterns',
-						onDone: {
-							target: 'preIntro',
-						},
-						onError: {
 							target: 'preIntro',
 						},
 					},
