@@ -147,6 +147,11 @@ export const AssemblerHub: CustomizeStoreComponent = ( props ) => {
 		isInitializedRef.current = true;
 	}
 
+	props.context.aiOnline = ! (
+		new URLSearchParams( window.location.search ).get( 'ai-offline' ) ===
+		'true'
+	);
+
 	return (
 		<CustomizeStoreContext.Provider value={ props }>
 			<ShortcutProvider style={ { height: '100%' } }>
