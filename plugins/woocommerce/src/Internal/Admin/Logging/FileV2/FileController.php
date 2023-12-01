@@ -12,13 +12,6 @@ use WP_Error;
  */
 class FileController {
 	/**
-	 * The maximum size of a file before it will get rotated.
-	 *
-	 * @const int
-	 */
-	public const MAX_FILE_SIZE = 5 * MB_IN_BYTES;
-
-	/**
 	 * The maximum number of rotations for a file before they start getting overwritten.
 	 *
 	 * This number should not go above 10, or it will cause issues with the glob patterns.
@@ -86,10 +79,24 @@ class FileController {
 	private $log_directory;
 
 	/**
+	 * The maximum size of a file before it will get rotated.
+	 *
+	 * @var int
+	 */
+	private $max_file_size;
+
+	/**
 	 * Class FileController
 	 */
 	public function __construct() {
 		$this->log_directory = trailingslashit( realpath( Constants::get_constant( 'WC_LOG_DIR' ) ) );
+
+		/**
+		 * Filter the maximum size of a log file before it will get rotated.
+		 *
+		 * @param int $max_file_size The file size in bytes.
+		 */
+		$this->max_file_size = apply_filters( 'woocommerce_log_file_size_limit', 5 * MB_IN_BYTES );
 	}
 
 	/**
@@ -104,7 +111,7 @@ class FileController {
 		$file_id = $source . '-' . gmdate( 'Y-m-d' );
 		$file    = $this->get_file_by_id( $file_id );
 
-		if ( $file instanceof File && $file->get_file_size() >= self::MAX_FILE_SIZE ) {
+		if ( $file instanceof File && $file->get_file_size() >= $this->max_file_size ) {
 			$rotated = $this->rotate_file( $file->get_file_id() );
 
 			if ( $rotated ) {
@@ -142,12 +149,12 @@ class FileController {
 	 *
 	 * @param string $file_id
 	 *
-	 * @return bool
+	 * @return bool True if the file and all its rotations were successfully rotated.
 	 */
 	private function rotate_file( $file_id ) {
 		$rotations = $this->get_file_rotations( $file_id );
 
-		if ( ! isset( $rotations['current'] ) ) {
+		if ( is_wp_error( $rotations ) || ! isset( $rotations['current'] ) ) {
 			return false;
 		}
 
@@ -155,9 +162,13 @@ class FileController {
 		unset( $rotations[ self::MAX_FILE_ROTATIONS - 1 ] );
 
 		$results = array();
-		foreach ( $rotations as $file ) {
-			$results[] = $file->rotate();
+		// Rotate starting with oldest first and working backwards.
+		for ( $i = 9; $i >= 0; $i -- ) {
+			if ( isset( $rotations[ $i ] ) ) {
+				$results[] = $rotations[ $i ]->rotate();
+			}
 		}
+		$results[] = $rotations['current']->rotate();
 
 		return ! in_array( false, $results, true );
 	}
